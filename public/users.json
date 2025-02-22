@@ -1,0 +1,197 @@
+{
+  "john_doe@example.com": {
+    "email": "john_doe@example.com",
+    "password": "password123",
+    "name": "John Doe"
+  },
+  "jane_smith@example.com": {
+    "email": "jane_smith@example.com",
+    "password": "password456",
+    "name": "Jane Smith"
+  },
+  "michael_jordan@example.com": {
+    "email": "michael_jordan@example.com",
+    "password": "password101",
+    "name": "Michael Jordan"
+  },
+  "sarah_connor@example.com": {
+    "email": "sarah_connor@example.com",
+    "password": "password102",
+    "name": "Sarah Connor"
+  },
+  "david_beckham@example.com": {
+    "email": "david_beckham@example.com",
+    "password": "password103",
+    "name": "David Beckham"
+  },
+  "emma_watson@example.com": {
+    "email": "emma_watson@example.com",
+    "password": "password104",
+    "name": "Emma Watson"
+  },
+  "will_smith@example.com": {
+    "email": "will_smith@example.com",
+    "password": "password105",
+    "name": "Will Smith"
+  },
+  "olivia_pope@example.com": {
+    "email": "olivia_pope@example.com",
+    "password": "password106",
+    "name": "Olivia Pope"
+  },
+  "leonardo_dicaprio@example.com": {
+    "email": "leonardo_dicaprio@example.com",
+    "password": "password107",
+    "name": "Leonardo DiCaprio"
+  },
+  "kylie_jenner@example.com": {
+    "email": "kylie_jenner@example.com",
+    "password": "password108",
+    "name": "Kylie Jenner"
+  },
+  "mark_zuckerberg@example.com": {
+    "email": "mark_zuckerberg@example.com",
+    "password": "password109",
+    "name": "Mark Zuckerberg"
+  },
+  "taylor_swift@example.com": {
+    "email": "taylor_swift@example.com",
+    "password": "password110",
+    "name": "Taylor Swift"
+  },
+  "rihanna_fenty@example.com": {
+    "email": "rihanna_fenty@example.com",
+    "password": "password111",
+    "name": "Rihanna Fenty"
+  },
+  "elizabeth_harvard@example.com": {
+    "email": "elizabeth_harvard@example.com",
+    "password": "password112",
+    "name": "Elizabeth Harvard"
+  },
+  "chris_hemsworth@example.com": {
+    "email": "chris_hemsworth@example.com",
+    "password": "password113",
+    "name": "Chris Hemsworth"
+  },
+  "angelina_jolie@example.com": {
+    "email": "angelina_jolie@example.com",
+    "password": "password114",
+    "name": "Angelina Jolie"
+  },
+  "tom_hanks@example.com": {
+    "email": "tom_hanks@example.com",
+    "password": "password115",
+    "name": "Tom Hanks"
+  },
+  "scarlett_johansson@example.com": {
+    "email": "scarlett_johansson@example.com",
+    "password": "password116",
+    "name": "Scarlett Johansson"
+  },
+  "kevin_hart@example.com": {
+    "email": "kevin_hart@example.com",
+    "password": "password117",
+    "name": "Kevin Hart"
+  },
+  "brad_pitt@example.com": {
+    "email": "brad_pitt@example.com",
+    "password": "password118",
+    "name": "Brad Pitt"
+  },
+  "sandra_bullock@example.com": {
+    "email": "sandra_bullock@example.com",
+    "password": "password119",
+    "name": "Sandra Bullock"
+  },
+  "natalie_portman@example.com": {
+    "email": "natalie_portman@example.com",
+    "password": "password120",
+    "name": "Natalie Portman"
+  },
+  "beyonce_knowles@example.com": {
+    "email": "beyonce_knowles@example.com",
+    "password": "password121",
+    "name": "Beyoncé Knowles"
+  },
+  "johnny_depp@example.com": {
+    "email": "johnny_depp@example.com",
+    "password": "password122",
+    "name": "Johnny Depp"
+  },
+  "meryl_streep@example.com": {
+    "email": "meryl_streep@example.com",
+    "password": "password123",
+    "name": "Meryl Streep"
+  },
+  "matt_damon@example.com": {
+    "email": "matt_damon@example.com",
+    "password": "password124",
+    "name": "Matt Damon"
+  },
+  "kate_winslet@example.com": {
+    "email": "kate_winslet@example.com",
+    "password": "password125",
+    "name": "Kate Winslet"
+  },
+  "jim_carrey@example.com": {
+    "email": "jim_carrey@example.com",
+    "password": "password126",
+    "name": "Jim Carrey"
+  },
+  "megan_fox@example.com": {
+    "email": "megan_fox@example.com",
+    "password": "password127",
+    "name": "Megan Fox"
+  },
+  "sophia_vergara@example.com": {
+    "email": "sophia_vergara@example.com",
+    "password": "password128",
+    "name": "Sofia Vergara"
+  },
+  "zayn_malik@example.com": {
+    "email": "zayn_malik@example.com",
+    "password": "password129",
+    "name": "Zayn Malik"
+  },
+  "chris_evans@example.com": {
+    "email": "chris_evans@example.com",
+    "password": "password130",
+    "name": "Chris Evans"
+  },
+  "sou@example.com": {
+    "email": "sou@example.com",
+    "password": "jhsdvfhjfbdw",
+    "name": "Kasjd"
+  },
+  "abish@example.com": {
+    "email": "abish@example.com",
+    "password": "abhishekkkkkk",
+    "name": "Abhishek Sahu"
+  },
+  "sou23@example.com": {
+    "email": "sou23@example.com",
+    "password": "jhsdvfhjf",
+    "name": "gdfgdfg"
+  },
+  "as@ex.com": {
+    "email": "as@ex.com",
+    "password": "jfewh",
+    "name": "kjfh"
+  },
+  "sounak@example.com": {
+    "email": "sounak@example.com",
+    "password": "sounak123",
+    "name": "sounak maity "
+  },
+  "vedant@example.com": {
+    "email": "vedant@example.com",
+    "password": "vedant123",
+    "name": "vednt Khare"
+  },
+  "rah@exa.com": {
+    "email": "rah@exa.com",
+    "password": "hfhskj",
+    "name": "rajnish"
+  }
+}

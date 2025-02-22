@@ -1,0 +1,79 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #e6f7ff; /* Light Blue Background */
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #007acc;
+  color: white;
+}
+
+/* Logo and Site Name */
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.site-name {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+/* User Selection */
+.user-selection {
+  display: flex;
+  align-items: center;
+}
+
+.user-selection span {
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.user-btn {
+  padding: 8px 15px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.user-btn:first-child {
+  background-color: #28a745; /* Green for Doctor */
+  color: white;
+}
+
+.user-btn:last-child {
+  background-color: #dc3545; /* Red for Patient */
+  color: white;
+}
+
+.user-btn:hover {
+  opacity: 0.8;
+}
+
+.user-btn.active {
+  border: 2px solid white;
+}
+
+/* Main Content */
+.content {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 20px;
+}

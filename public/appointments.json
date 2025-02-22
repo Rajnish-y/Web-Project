@@ -1,0 +1,35 @@
+{
+    "appointments": [
+      {
+        "id": 1,
+        "patient": "Sarah Johnson",
+        "time": "09:00 AM",
+        "type": "Check-up",
+        "status": "Confirmed"
+      },
+      {
+        "id": 2,
+        "patient": "Mike Peters",
+        "time": "10:30 AM",
+        "type": "Follow-up",
+        "status": "Confirmed"
+      }
+    ],
+    "appointmentRequests": [
+      {
+        "id": 3,
+        "patient": "John Doe",
+        "time": "11:00 AM",
+        "type": "Check-up",
+        "status": "Pending"
+      },
+      {
+        "id": 4,
+        "patient": "Alice Brown",
+        "time": "01:30 PM",
+        "type": "Consultation",
+        "status": "Pending"
+      }
+    ]
+  }
+  
