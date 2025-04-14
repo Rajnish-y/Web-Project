@@ -1,6 +1,7 @@
 "use client";
 import { useScroll, useTransform, motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
+import { Activity, ClipboardList, Shield, HeartPulse, Stethoscope } from "lucide-react";
 
 export const Timeline = ({ data }) => {
   const ref = useRef(null);
@@ -16,28 +17,58 @@ export const Timeline = ({ data }) => {
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start 5%", "end 80%"], 
+    offset: ["start 5%", "end 80%"],
   });
 
-  const heightTransform = useTransform(scrollYProgress, [0, 1], [0, height * 1.3]); 
-  const opacityTransform = useTransform(scrollYProgress, [0, 0.03], [0, 1]); 
+  const heightTransform = useTransform(scrollYProgress, [0, 1], [0, height * 1.3]);
+  const opacityTransform = useTransform(scrollYProgress, [0, 0.03], [0, 1]);
+
+  const healthcareFeatures = [
+    {
+      title: "Comprehensive Health Records",
+      content: "Secure digital storage for all your medical history and test results.",
+      icon: <ClipboardList className="h-5 w-5" />
+    },
+    {
+      title: "Advanced Diagnostics",
+      content: "Cutting-edge technology for accurate health assessments and screenings.",
+      icon: <Activity className="h-5 w-5" />
+    },
+    {
+      title: "Patient Privacy Protection",
+      content: "Military-grade encryption for all your sensitive health information.",
+      icon: <Shield className="h-5 w-5" />
+    },
+    {
+      title: "Wellness Monitoring",
+      content: "Track your vital signs and health metrics over time.",
+      icon: <HeartPulse className="h-5 w-5" />
+    },
+    {
+      title: "Specialist Network",
+      content: "Access to top medical professionals across various specialties.",
+      icon: <Stethoscope className="h-5 w-5" />
+    }
+  ];
 
   return (
     <div className="bg-gradient-to-b from-gray-900 to-gray-800 border-t border-gray-700 py-12 font-sans md:px-10" ref={containerRef}>
       <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10">
         <h1 className="text-2xl md:text-7xl font-extrabold text-center mb-8 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 text-transparent bg-clip-text drop-shadow-lg">
-          Unlock AI-Powered Features
+          Healthcare Innovation Timeline
         </h1>
       </div>
 
       <div ref={ref} className="relative max-w-7xl mx-auto pb-20">
-        {data.map((item, index) => (
+        {healthcareFeatures.map((item, index) => (
           <div key={index} className="flex justify-start pt-10 md:pt-32 md:gap-10">
             <div className="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full">
               <div className="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-white dark:bg-black flex items-center justify-center">
-                <div className="h-4 w-4 rounded-full bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 p-2" />
+                <div className="h-4 w-4 rounded-full bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 p-2 flex items-center justify-center">
+                  {item.icon}
+                </div>
               </div>
-              
+
               <h3 className="hidden md:block text-xl md:pl-20 md:text-5xl font-bold text-white">
                 {item.title}
               </h3>
@@ -47,7 +78,7 @@ export const Timeline = ({ data }) => {
               <h3 className="md:hidden block text-2xl mb-4 text-left font-bold text-white">
                 {item.title}
               </h3>
-              <p className="text-white">{item.content}</p>
+              <p className="text-white text-lg">{item.content}</p>
             </div>
           </div>
         ))}

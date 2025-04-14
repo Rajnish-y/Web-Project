@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Activity, User, Calendar, FileText, DollarSign, Bell, Clipboard, Stethoscope, Clock, TrendingUp, TrendingDown } from "lucide-react";
 import Header from "./Header";
 import Footer from "./Footer";
 import Sidebar from "./Sidebar";
@@ -6,177 +7,227 @@ import Sidebar from "./Sidebar";
 const Dashboard = () => {
   const [doctors, setDoctors] = useState([]);
   const [loggedInDoctor, setLoggedInDoctor] = useState(null);
-  const [totalPatients, setTotalPatients] = useState(0);
-  const [appointmentsToday, setAppointmentsToday] = useState(0);
-  const [pendingReports, setPendingReports] = useState(0);
-  const [totalRevenue, setTotalRevenue] = useState(0);
+  const [stats, setStats] = useState({
+    totalPatients: 0,
+    appointmentsToday: 0,
+    pendingReports: 0,
+    totalRevenue: 0
+  });
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/doctors.json")
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch("/doctors.json");
+        const data = await response.json();
         setDoctors(data);
 
-        // Retrieve the logged-in doctor's ID from localStorage
-        const loggedInDoctorID = localStorage.getItem("doctorID"); // Use "doctorID" as the key
+        const loggedInDoctorID = localStorage.getItem("doctorID");
+        const doctorData = data.find(doctor => doctor.doctorID === loggedInDoctorID);
 
-        // Find the logged-in doctor's data
-        const loggedInDoctorData = data.find(
-          (doctor) => doctor.doctorID === loggedInDoctorID
-        );
-
-        if (loggedInDoctorData) {
-          setLoggedInDoctor(loggedInDoctorData);
-
-          // Personalized calculations based on the logged-in doctor
-          setTotalPatients(1000); // Sample data for total patients
-          setAppointmentsToday(loggedInDoctorData.appointments || 10); // Use doctor's appointments if available
-          setPendingReports(5); // Sample data for pending reports
-          setTotalRevenue(loggedInDoctorData.appointmentCost * 10 || 12000); // Sample revenue calculation
-        } else {
-          console.error("Logged-in doctor not found in the data.");
+        if (doctorData) {
+          setLoggedInDoctor(doctorData);
+          setStats({
+            totalPatients: 1000 + Math.floor(Math.random() * 500),
+            appointmentsToday: doctorData.appointments || 10 + Math.floor(Math.random() * 5),
+            pendingReports: 5 + Math.floor(Math.random() * 3),
+            totalRevenue: (doctorData.appointmentCost || 1200) * (10 + Math.floor(Math.random() * 5))
+          });
         }
-      })
-      .catch((err) => console.error("Error loading doctors:", err));
+      } catch (err) {
+        console.error("Error loading data:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
+  const StatCard = ({ icon: Icon, title, value, change, color }) => (
+    <div className="bg-white rounded-xl shadow-md p-6 flex flex-col transition-all hover:shadow-lg hover:-translate-y-1">
+      <div className="flex items-center mb-4">
+        <div className={`p-3 rounded-lg ${color.replace('text', 'bg') + ' bg-opacity-10'}`}>
+          <Icon className={`h-6 w-6 ${color}`} />
+        </div>
+        <h3 className="ml-3 text-lg font-medium text-gray-600">{title}</h3>
+      </div>
+      <p className="text-3xl font-bold text-gray-800 mb-2">{value}</p>
+      <div className="flex items-center text-sm">
+        {change > 0 ? (
+          <TrendingUp className="h-4 w-4 text-green-500 mr-1" />
+        ) : (
+          <TrendingDown className="h-4 w-4 text-red-500 mr-1" />
+        )}
+        <span className={`${change > 0 ? 'text-green-600' : 'text-red-600'}`}>
+          {Math.abs(change)}% {change > 0 ? 'increase' : 'decrease'} from last month
+        </span>
+      </div>
+    </div>
+  );
+
+  const InfoCard = ({ icon: Icon, title, content, color }) => (
+    <div className="bg-white rounded-xl shadow-md p-6 transition-all hover:shadow-lg hover:-translate-y-1">
+      <div className="flex items-center mb-4">
+        <div className={`p-3 rounded-lg ${color + ' bg-opacity-10'}`}>
+          <Icon className={`h-6 w-6 ${color.replace('bg', 'text')}`} />
+        </div>
+        <h3 className="ml-3 text-lg font-medium text-gray-800">{title}</h3>
+      </div>
+      <p className="text-gray-600">{content}</p>
+    </div>
+  );
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col bg-gray-50">
+        <Header />
+        <div className="flex flex-1">
+          <Sidebar />
+          <div className="flex-1 flex items-center justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
       <div className="flex flex-1">
         <Sidebar />
-        <div className="flex-1 p-6 bg-blue-50">
-          <div className="container mx-auto p-6">
-            {/* Personalized Welcome Message */}
-            <h1 className="text-4xl font-bold mb-4 text-[#0D2853] text-center drop-shadow-lg">
-              Welcome back, {loggedInDoctor ? loggedInDoctor.name : "Doctor"}!
-            </h1>
-            <p className="text-center text-gray-700 text-lg">
-              Here's an overview of your activities today.
-            </p>
+        <main className="flex-1 p-6 overflow-auto">
+          <div className="max-w-7xl mx-auto">
+            {/* Welcome Section */}
+            <section className="mb-10">
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
+                Welcome back, <span className="text-blue-600">{loggedInDoctor?.name || "Doctor"}</span>!
+              </h1>
+              <p className="text-gray-600">
+                Here's what's happening with your practice today.
+              </p>
+            </section>
 
-            {/* Display Logged-in Doctor's Details */}
+            {/* Stats Overview */}
+            <section className="mb-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <StatCard
+                  icon={User}
+                  title="Total Patients"
+                  value={stats.totalPatients.toLocaleString()}
+                  change={12}
+                  color="text-blue-500"
+                />
+                <StatCard
+                  icon={Calendar}
+                  title="Today's Appointments"
+                  value={stats.appointmentsToday}
+                  change={-5}
+                  color="text-purple-500"
+                />
+                <StatCard
+                  icon={FileText}
+                  title="Pending Reports"
+                  value={stats.pendingReports}
+                  change={8}
+                  color="text-yellow-500"
+                />
+                <StatCard
+                  icon={DollarSign}
+                  title="Total Revenue"
+                  value={`₹${stats.totalRevenue.toLocaleString()}`}
+                  change={15}
+                  color="text-green-500"
+                />
+              </div>
+            </section>
+
+            {/* Doctor Profile Section */}
             {loggedInDoctor && (
-              <div className="mt-8 bg-white/20 backdrop-blur-lg shadow-lg border border-white/40 rounded-xl p-6">
-                <h2 className="text-2xl font-semibold mb-4">Your Details</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <section className="mb-10 bg-white rounded-xl shadow-md overflow-hidden">
+                <div className="p-6 border-b">
+                  <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+                    <Stethoscope className="h-5 w-5 text-blue-500 mr-2" />
+                    Your Profile Details
+                  </h2>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
                   <div>
-                    <p className="text-lg font-semibold">Name:</p>
-                    <p className="text-lg text-gray-700">{loggedInDoctor.name}</p>
+                    <p className="text-sm font-medium text-gray-500">Full Name</p>
+                    <p className="text-lg text-gray-800">{loggedInDoctor.name}</p>
                   </div>
                   <div>
-                    <p className="text-lg font-semibold">Department:</p>
-                    <p className="text-lg text-gray-700">{loggedInDoctor.department}</p>
+                    <p className="text-sm font-medium text-gray-500">Department</p>
+                    <p className="text-lg text-gray-800">{loggedInDoctor.department}</p>
                   </div>
                   <div>
-                    <p className="text-lg font-semibold">Qualification:</p>
-                    <p className="text-lg text-gray-700">{loggedInDoctor.qualification}</p>
+                    <p className="text-sm font-medium text-gray-500">Qualification</p>
+                    <p className="text-lg text-gray-800">{loggedInDoctor.qualification}</p>
                   </div>
                   <div>
-                    <p className="text-lg font-semibold">Date of Birth:</p>
-                    <p className="text-lg text-gray-700">{loggedInDoctor.dob}</p>
+                    <p className="text-sm font-medium text-gray-500">Date of Birth</p>
+                    <p className="text-lg text-gray-800">{loggedInDoctor.dob}</p>
                   </div>
                   <div>
-                    <p className="text-lg font-semibold">Age:</p>
-                    <p className="text-lg text-gray-700">{loggedInDoctor.age}</p>
+                    <p className="text-sm font-medium text-gray-500">Age</p>
+                    <p className="text-lg text-gray-800">{loggedInDoctor.age}</p>
                   </div>
                   <div>
-                    <p className="text-lg font-semibold">Blood Group:</p>
-                    <p className="text-lg text-gray-700">{loggedInDoctor.bloodGroup}</p>
+                    <p className="text-sm font-medium text-gray-500">Blood Group</p>
+                    <p className="text-lg text-gray-800">{loggedInDoctor.bloodGroup}</p>
                   </div>
                   <div>
-                    <p className="text-lg font-semibold">Location:</p>
-                    <p className="text-lg text-gray-700">
-                      Latitude: {loggedInDoctor.location.latitude}, Longitude:{" "}
-                      {loggedInDoctor.location.longitude}
+                    <p className="text-sm font-medium text-gray-500">Location</p>
+                    <p className="text-lg text-gray-800">
+                      {loggedInDoctor.location?.latitude}, {loggedInDoctor.location?.longitude}
                     </p>
                   </div>
                   <div>
-                    <p className="text-lg font-semibold">Appointment Cost:</p>
-                    <p className="text-lg text-gray-700">
+                    <p className="text-sm font-medium text-gray-500">Appointment Cost</p>
+                    <p className="text-lg text-gray-800">
                       ₹{loggedInDoctor.appointmentCost}
                     </p>
                   </div>
                   <div>
-                    <p className="text-lg font-semibold">Contact:</p>
-                    <p className="text-lg text-gray-700">{loggedInDoctor.contact}</p>
+                    <p className="text-sm font-medium text-gray-500">Contact</p>
+                    <p className="text-lg text-gray-800">{loggedInDoctor.contact}</p>
                   </div>
                 </div>
-              </div>
+              </section>
             )}
 
-            {/* Stat Cards with Personalized Data */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-8">
-              {[{
-                title: "Total Patients",
-                value: totalPatients.toLocaleString(),
-                change: "+12%",
-                color: "text-green-500",
-              },
-              {
-                title: "Today's Appointments",
-                value: appointmentsToday.toLocaleString(),
-                change: "-5%",
-                color: "text-red-500",
-              },
-              {
-                title: "Pending Reports",
-                value: pendingReports.toFixed(0),
-                change: "+8%",
-                color: "text-yellow-500",
-              },
-              {
-                title: "Total Revenue",
-                value: `₹${totalRevenue.toLocaleString()}`,
-                change: "+15%",
-                color: "text-green-500",
-              }]
-              .map((stat, index) => (
-                <div
-                  key={index}
-                  className="bg-white/20 backdrop-blur-lg shadow-lg border border-white/40 
-                             rounded-xl p-6 transition-transform hover:scale-105 hover:bg-white/30"
-                >
-                  <h2 className="text-xl font-semibold mb-2">{stat.title}</h2>
-                  <p className="text-3xl font-bold">{stat.value}</p>
-                  <p className={`text-sm ${stat.color}`}>
-                    {stat.change} from last month
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            {/* Additional Sections */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mt-10">
-              {[{
-                title: "Upcoming Appointments",
-                content: `You have ${appointmentsToday} upcoming appointments today.`,
-              },
-              {
-                title: "Recent Activities",
-                content: `You checked ${pendingReports} patient records today.`,
-              },
-              {
-                title: "Notifications",
-                content: "New lab reports are available for 2 patients.",
-              },
-              {
-                title: "Doctor's Notes",
-                content: "Reminder: Call Mr. Johnson for follow-up.",
-              }]
-              .map((tab, index) => (
-                <div
-                  key={index}
-                  className="bg-white/20 backdrop-blur-lg shadow-lg border border-white/40 
-                             rounded-xl p-6 transition-transform hover:scale-105 hover:bg-white/30"
-                >
-                  <h2 className="text-xl font-semibold mb-2">{tab.title}</h2>
-                  <p className="text-lg text-gray-700">{tab.content}</p>
-                </div>
-              ))}
-            </div>
+            {/* Quick Info Cards */}
+            <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <InfoCard
+                icon={Clock}
+                title="Upcoming Appointments"
+                content={`You have ${stats.appointmentsToday} appointments scheduled for today.`}
+                color="bg-blue-100"
+              />
+              <InfoCard
+                icon={Clipboard}
+                title="Recent Activities"
+                content={`You've reviewed ${Math.floor(stats.pendingReports / 2)} patient records today.`}
+                color="bg-purple-100"
+              />
+              <InfoCard
+                icon={Bell}
+                title="Notifications"
+                content="New lab reports are available for 2 patients. 1 prescription needs approval."
+                color="bg-yellow-100"
+              />
+              <InfoCard
+                icon={Activity}
+                title="Practice Insights"
+                content={`Your patient satisfaction score is 94% this month (up 3%).`}
+                color="bg-green-100"
+              />
+            </section>
           </div>
-        </div>
+        </main>
       </div>
       <Footer />
     </div>

@@ -22,20 +22,22 @@ const AppointmentBooking = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const doctorResponse = await fetch("/doctors.json");
+        const [doctorResponse, appointmentResponse] = await Promise.all([
+          fetch("/doctors.json"),
+          fetch("/appointments.json")
+        ]);
+
         if (!doctorResponse.ok) throw new Error("Error fetching doctors");
+        if (!appointmentResponse.ok) throw new Error("Error fetching appointments");
 
         const doctorData = await doctorResponse.json();
-        setDoctors(doctorData);
-
-        const appointmentResponse = await fetch("/appointments.json");
-        if (!appointmentResponse.ok) throw new Error("successful!");
-
         const appointmentData = await appointmentResponse.json();
-        setAppointments(appointmentData.appointments);  // Assuming "appointments.json" contains confirmed appointments
+
+        setDoctors(doctorData);
+        setAppointments(appointmentData.appointments);
       } catch (error) {
         console.error("Error:", error);
-        alert("Failed to load data.");
+        alert("Failed to load data. Please try again later.");
       }
     };
 
@@ -61,29 +63,18 @@ const AppointmentBooking = () => {
       return;
     }
 
-    const appointmentData = {
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      doctor: formData.doctor,
-      date: formData.date,
-      time: formData.time,
-    };
-
     try {
       const response = await fetch("http://localhost:3500/appointments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(appointmentData),
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
-        alert("Appointment request sent!");
+        alert("Appointment booked successfully!");
         setFormData({ name: "", email: "", phone: "", doctor: "", date: "", time: "" });
       } else {
-        const errorResponse = await response.json();
-        console.error("Error Response:", errorResponse);
-        alert(`successfully booked`);
+        throw new Error("Failed to book appointment");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -110,54 +101,104 @@ const AppointmentBooking = () => {
   return (
     <>
       <FHeader />
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', backgroundColor: '#eff6ff' }}>
-        <div style={{ width: '100%', maxWidth: '400px', padding: '20px', backgroundColor: 'white', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
-          <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Book an Appointment</h2>
-          <form onSubmit={handleSubmit}>
-            <div style={{ marginBottom: '10px' }}>
-              <label>Name</label>
-              <input type="text" name="name" value={formData.name} onChange={handleChange} required style={{ width: '100%', padding: '8px', marginTop: '5px', borderRadius: '5px', border: '1px solid #ccc' }} />
-            </div>
-            <div style={{ marginBottom: '10px' }}>
-              <label>Email</label>
-              <input type="email" name="email" value={formData.email} onChange={handleChange} required style={{ width: '100%', padding: '8px', marginTop: '5px', borderRadius: '5px', border: '1px solid #ccc' }} />
-            </div>
-            <div style={{ marginBottom: '10px' }}>
-              <label>Phone</label>
-              <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required style={{ width: '100%', padding: '8px', marginTop: '5px', borderRadius: '5px', border: '1px solid #ccc' }} />
-            </div>
-            <div style={{ marginBottom: '10px' }}>
-              <label>Doctor</label>
-              <select name="doctor" value={formData.doctor} onChange={handleChange} required style={{ width: '100%', padding: '8px', marginTop: '5px', borderRadius: '5px', border: '1px solid #ccc' }}>
-                <option value="">Select a Doctor</option>
-                {doctors.length > 0 ? (
-                  doctors.map((doc, index) => (
-                    <option key={index} value={doc.name}>{doc.name}</option>
-                  ))
-                ) : (
-                  <option>Loading doctors...</option>
-                )}
-              </select>
-            </div>
-            <div style={{ marginBottom: '10px' }}>
-              <label>Date</label>
-              <input type="date" name="date" value={formData.date} onChange={handleChange} required style={{ width: '100%', padding: '8px', marginTop: '5px', borderRadius: '5px', border: '1px solid #ccc' }} />
-            </div>
-            <div style={{ marginBottom: '10px' }}>
-              <label>Time</label>
-              <select name="time" value={formData.time} onChange={handleChange} required style={{ width: '100%', padding: '8px', marginTop: '5px', borderRadius: '5px', border: '1px solid #ccc' }}>
-                <option value="">Select a Time</option>
-                {availableTimes.length > 0 ? (
-                  availableTimes.map((time, index) => (
-                    <option key={index} value={time}>{time}</option>
-                  ))
-                ) : (
-                  <option>No available times</option>
-                )}
-              </select>
-            </div>
-            <button type="submit" style={{ width: '100%', padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Book Appointment</button>
-          </form>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4">
+        <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
+          <div className="bg-blue-600 py-4 px-6">
+            <h2 className="text-2xl font-bold text-white">Book an Appointment</h2>
+          </div>
+
+          <div className="p-6">
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Doctor</label>
+                  <select
+                    name="doctor"
+                    value={formData.doctor}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  >
+                    <option value="">Select a Doctor</option>
+                    {doctors.map((doc, index) => (
+                      <option key={index} value={doc.name}>{doc.name}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                  <input
+                    type="date"
+                    name="date"
+                    value={formData.date}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Time</label>
+                  <select
+                    name="time"
+                    value={formData.time}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  >
+                    <option value="">Select a Time</option>
+                    {availableTimes.map((time, index) => (
+                      <option key={index} value={time}>{time}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg shadow-md transition duration-300"
+              >
+                Book Appointment
+              </button>
+            </form>
+          </div>
         </div>
       </div>
       <FFooter />

@@ -1,52 +1,63 @@
-import React from "react";
-import { Activity, Calendar, Users, Shield, Heart, MessageSquare } from "lucide-react";
+import React, { useState } from "react";
+import { Activity, ChevronRight, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Timeline } from "../ui/timeline";
 import FHeader from "./FHeader";
 import FFooter from "./FFooter";
-
-// Header Component
-const Header = () => (
-  <header className="fixed top-0 w-full bg-gray-900 border-b border-gray-800 z-50">
-    <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
-      <div className="flex items-center space-x-2">
-        <Activity className="h-8 w-8 text-blue-400" />
-        <span className="text-xl font-bold text-white">DOC HIVE</span>
-      </div>
-      <div className="hidden md:flex items-center space-x-6">
-        <a href="/" className="text-gray-300 hover:text-blue-400 transition-colors">Home</a>
-        <a href="/doctors" className="text-gray-300 hover:text-blue-400 transition-colors">Find Doctors</a>
-        <a href="/ai" className="text-gray-300 hover:text-blue-400 transition-colors">Chatbot</a>
-        <a href="/about" className="text-gray-300 hover:text-blue-400 transition-colors">About Us</a>
-      </div>
-    </nav>
-  </header>
-);
+import PFeaturesSection from "./PFeaturesSection";
 
 // Hero Section
 const HeroSection = () => {
   const navigate = useNavigate();
+  const [hovered, setHovered] = useState(false);
 
   return (
-    <section className="pt-32 pb-16 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
-      <div className="container mx-auto px-4 flex flex-col items-center text-center">
-        <Activity className="h-16 w-16 text-blue-400 mb-6 mx-auto" />
+    <section className="pt-32 pb-20 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-1/4 left-1/4 w-32 h-32 rounded-full bg-blue-400 filter blur-3xl"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-40 h-40 rounded-full bg-purple-500 filter blur-3xl"></div>
+      </div>
+
+      <div className="container mx-auto px-4 flex flex-col items-center text-center relative z-10">
+        <div
+          className={`mb-8 transition-all duration-500 ${hovered ? 'scale-110' : 'scale-100'}`}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        >
+          <Activity className="h-16 w-16 text-blue-400 mx-auto" />
+        </div>
+
         <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-          Your AI-Powered Virtual Nurse <br />at Your Fingertips!
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+            Healthcare Solutions
+          </span> <br />
+          At Your Fingertips
         </h1>
+
         <p className="text-xl text-gray-300 mb-8 max-w-2xl">
-          Experience healthcare reimagined with our intelligent virtual nursing assistant.
-          Get instant medical guidance and connect with healthcare professionals.
+          Discover a new era of healthcare with our intuitive platform.
+          Access instant medical guidance and connect seamlessly with healthcare professionals.
         </p>
+
         <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-          <button 
-            onClick={() => navigate("/appointment")} 
-            className="bg-blue-500 text-white px-8 py-4 rounded-lg hover:bg-blue-600 transition-colors"
+          <button
+            onClick={() => navigate("/appointment")}
+            className="relative overflow-hidden bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-all duration-300 group"
           >
-            Start Chatting
+            <span className="relative z-10 flex items-center justify-center">
+              Start Chatting <ChevronRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+            </span>
+            <span className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
           </button>
-          <button onClick = {()=>navigate("/map")} className="bg-gray-800 text-blue-400 px-8 py-4 rounded-lg border-2 border-blue-400 hover:bg-gray-700 transition-colors">
-            Find a Doctor
+
+          <button
+            onClick={() => navigate("/map")}
+            className="relative overflow-hidden bg-transparent text-blue-400 px-8 py-4 rounded-lg border-2 border-blue-400 hover:bg-blue-400/10 transition-all duration-300 group"
+          >
+            <span className="relative z-10 flex items-center justify-center">
+              Find a Doctor <Plus className="ml-2 h-5 w-5 transition-transform group-hover:rotate-90" />
+            </span>
           </button>
         </div>
       </div>
@@ -54,41 +65,75 @@ const HeroSection = () => {
   );
 };
 
-// Features Section
+// Features data (moved to separate file or can be passed as props)
 const features = [
-  { title: "AI Symptom Checker", content: "Get instant health guidance powered by advanced AI.", icon: <MessageSquare className="h-10 w-10 text-blue-400" /> },
-  { title: "Find Nearby Doctors", content: "Connect with qualified healthcare professionals in your area.", icon: <Users className="h-10 w-10 text-blue-400" /> },
-  { title: "Easy Appointments", content: "Book and manage appointments with just a few clicks.", icon: <Calendar className="h-10 w-10 text-blue-400" /> },
-  { title: "Secure Records", content: "Your health data is protected with military-grade encryption.", icon: <Shield className="h-10 w-10 text-blue-400" /> },
-  { title: "Health Monitoring", content: "Track your vitals in real-time with IoT integration.", icon: <Heart className="h-10 w-10 text-blue-400" /> },
+  {
+    title: "AI Symptom Checker",
+    content: "Get instant health guidance powered by advanced AI.",
+    icon: "MessageSquare",
+    color: "from-blue-500 to-blue-600"
+  },
+  {
+    title: "Find Nearby Doctors",
+    content: "Connect with qualified healthcare professionals in your area.",
+    icon: "Users",
+    color: "from-purple-500 to-purple-600"
+  },
+  {
+    title: "Easy Appointments",
+    content: "Book and manage appointments with just a few clicks.",
+    icon: "Calendar",
+    color: "from-green-500 to-green-600"
+  },
+  {
+    title: "Secure Records",
+    content: "Your health data is protected with military-grade encryption.",
+    icon: "Shield",
+    color: "from-amber-500 to-amber-600"
+  },
+  {
+    title: "Health Monitoring",
+    content: "Track your vitals in real-time with IoT integration.",
+    icon: "Heart",
+    color: "from-pink-500 to-pink-600"
+  },
 ];
 
-const FeaturesSection = () => (
-  <section className="py-20 bg-gray-900">
-    <div className="container mx-auto px-4 text-center">
-      <h2 className="text-3xl font-bold text-white mb-12">Our Features</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {features.map((feature, index) => (
-          <div key={index} className="p-6 bg-gray-800 rounded-lg hover:bg-gray-750 transition-colors">
-            <div className="mb-4">{feature.icon}</div>
-            <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
-            <p className="text-lg text-gray-300">{feature.content}</p>
-          </div>
-        ))}
+// Stats Section
+const StatsSection = () => {
+  const stats = [
+    { value: "10,000+", label: "Patients Helped" },
+    { value: "500+", label: "Verified Doctors" },
+    { value: "24/7", label: "Availability" },
+    { value: "98%", label: "Satisfaction Rate" },
+  ];
+
+  return (
+    <section className="py-16 bg-gray-800">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          {stats.map((stat, index) => (
+            <div key={index} className="text-center">
+              <div className="text-4xl font-bold text-blue-400 mb-2">{stat.value}</div>
+              <div className="text-lg text-gray-300">{stat.label}</div>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 // Main Dashboard Component
 const PDashboard = () => (
-  <>
-    <Header />
+  <div className="bg-gray-900 min-h-screen">
+    <FHeader />
     <HeroSection />
+    <StatsSection />
     <Timeline data={features} />
-    <FeaturesSection />
+    <PFeaturesSection features={features} /> {/* Using the imported PFeaturesSection component */}
     <FFooter />
-  </>
+  </div>
 );
 
 export default PDashboard;

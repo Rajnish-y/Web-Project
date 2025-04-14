@@ -5,122 +5,165 @@ import {
   FaTwitter,
   FaInstagram,
   FaYoutube,
+  FaPhoneAlt,
+  FaEnvelope,
+  FaMapMarkerAlt,
+  FaChevronRight
 } from "react-icons/fa";
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="bg-gradient-to-r from-[#0F172A] to-[#112240] text-white py-10">
-      <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {/* Contact Info */}
-        <div className="space-y-4">
-          <h3 className="text-green-400 text-lg font-semibold">Contact Us</h3>
-          <p className="flex items-center space-x-3">
-            <span>📞</span> <span>+91-89005-60169</span>
-          </p>
-          <p className="flex items-center space-x-3">
-            <span>📞</span> <span>+91-73001-53188</span>
-          </p>
-          <p className="flex items-center space-x-3">
-            <span>✉️</span> <span>support@dochive.com</span>
-          </p>
+    <footer className="bg-gradient-to-br from-[#0F172A] to-[#1E293B] text-white">
+      <div className="container mx-auto px-6 py-12">
+        {/* Main Footer Content */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          {/* Contact Info */}
+          <div className="space-y-6">
+            <h3 className="text-xl font-bold text-green-400 flex items-center">
+              <span className="w-1 h-6 bg-green-400 mr-2"></span>
+              Contact Us
+            </h3>
+            <div className="space-y-4">
+              <div className="flex items-start">
+                <div className="text-green-400 mt-1 mr-3">
+                  <FaPhoneAlt />
+                </div>
+                <div>
+                  <p className="font-medium">Phone Numbers</p>
+                  <p className="text-gray-300">+91-89005-60169</p>
+                  <p className="text-gray-300">+91-73001-53188</p>
+                </div>
+              </div>
+
+              <div className="flex items-start">
+                <div className="text-green-400 mt-1 mr-3">
+                  <FaEnvelope />
+                </div>
+                <div>
+                  <p className="font-medium">Email</p>
+                  <p className="text-gray-300">support@dochive.com</p>
+                  <p className="text-gray-300">sales@dochive.com</p>
+                </div>
+              </div>
+
+              <div className="flex items-start">
+                <div className="text-green-400 mt-1 mr-3">
+                  <FaMapMarkerAlt />
+                </div>
+                <div>
+                  <p className="font-medium">Headquarters</p>
+                  <p className="text-gray-300">123 Tech Park, Bangalore</p>
+                  <p className="text-gray-300">Karnataka, India - 560001</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Solutions */}
+          <div>
+            <h3 className="text-xl font-bold text-green-400 flex items-center mb-6">
+              <span className="w-1 h-6 bg-green-400 mr-2"></span>
+              Solutions
+            </h3>
+            <ul className="space-y-3">
+              {[
+                "AI-Powered Document Management",
+                "Secure Cloud Storage",
+                "Blockchain Security",
+                "Automated Workflows",
+                "Smart OCR Technology",
+                "Collaboration Tools"
+              ].map((item, index) => (
+                <li key={index} className="group">
+                  <a href="#" className="flex items-center text-gray-300 hover:text-white transition-colors">
+                    <FaChevronRight className="text-xs text-green-400 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    {item}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div>
+            <h3 className="text-xl font-bold text-green-400 flex items-center mb-6">
+              <span className="w-1 h-6 bg-green-400 mr-2"></span>
+              Company
+            </h3>
+            <ul className="space-y-3">
+              {[
+                "About Us",
+                "Leadership Team",
+                "Careers",
+                "Newsroom",
+                "Partnerships",
+                "Contact Us"
+              ].map((item, index) => (
+                <li key={index} className="group">
+                  <a href="#" className="flex items-center text-gray-300 hover:text-white transition-colors">
+                    <FaChevronRight className="text-xs text-green-400 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    {item}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Social Media */}
+          <div>
+            <h3 className="text-xl font-bold text-green-400 flex items-center mb-6">
+              <span className="w-1 h-6 bg-green-400 mr-2"></span>
+              Connect With Us
+            </h3>
+            <div className="flex space-x-4 mb-6">
+              {[
+                { icon: <FaFacebookF />, color: "hover:text-blue-500" },
+                { icon: <FaLinkedinIn />, color: "hover:text-blue-400" },
+                { icon: <FaTwitter />, color: "hover:text-blue-300" },
+                { icon: <FaInstagram />, color: "hover:text-pink-500" },
+                { icon: <FaYoutube />, color: "hover:text-red-500" }
+              ].map((social, index) => (
+                <a
+                  key={index}
+                  href="#"
+                  className={`text-gray-400 text-2xl transition-colors ${social.color}`}
+                  aria-label={`Social media link ${index}`}
+                >
+                  {social.icon}
+                </a>
+              ))}
+            </div>
+            <div className="text-gray-300">
+              <p className="mb-2">Follow us for updates and announcements</p>
+              <p>Join our community of healthcare professionals</p>
+            </div>
+          </div>
         </div>
 
-        {/* Solutions */}
-        <div>
-          <h3 className="text-green-400 text-lg font-semibold mb-4">
-            Solutions
-          </h3>
-          <ul className="space-y-2 text-gray-300">
-            {[
-              "AI-Powered Document Management",
-              "Secure Cloud Storage",
-              "Blockchain-Integrated Security",
-              "Automated Workflows",
-              "Smart OCR & Data Extraction",
-              "Collaboration & Sharing",
-            ].map((item, index) => (
-              <li
-                key={index}
-                className="hover:text-white transition cursor-pointer"
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
+        {/* Divider */}
+        <div className="border-t border-gray-700 my-8"></div>
+
+        {/* Footer Bottom */}
+        <div className="flex flex-col md:flex-row justify-between items-center">
+          <div className="mb-4 md:mb-0">
+            <p className="text-gray-400 text-sm">
+              &copy; {currentYear} DocHive Technologies. All rights reserved.
+            </p>
+          </div>
+          <div className="flex space-x-6">
+            <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
+              Privacy Policy
+            </a>
+            <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
+              Terms of Service
+            </a>
+            <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
+              Cookie Policy
+            </a>
+          </div>
         </div>
-
-        {/* Company */}
-        <div>
-          <h3 className="text-green-400 text-lg font-semibold mb-4">Company</h3>
-          <ul className="space-y-2 text-gray-300">
-            {[
-              "About Us",
-              "Careers",
-              "Customer Stories",
-              "Contact",
-              "Privacy Policy",
-              "Press Kit",
-            ].map((item, index) => (
-              <li
-                key={index}
-                className="hover:text-white transition cursor-pointer"
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Resources */}
-        <div>
-          <h3 className="text-green-400 text-lg font-semibold mb-4">
-            Resources
-          </h3>
-          <ul className="space-y-2 text-gray-300">
-            {[
-              "Blog",
-              "Whitepapers",
-              "Knowledge Base",
-              "Case Studies",
-              "API Documentation",
-              "Community Forum",
-            ].map((item, index) => (
-              <li
-                key={index}
-                className="hover:text-white transition cursor-pointer"
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      {/* Social Icons */}
-      <div className="flex justify-center space-x-6 mt-8">
-        {[
-          { icon: <FaFacebookF />, link: "https://facebook.com/dochive" },
-          {
-            icon: <FaLinkedinIn />,
-            link: "https://linkedin.com/company/dochive",
-          },
-          { icon: <FaTwitter />, link: "https://twitter.com/dochive" },
-          { icon: <FaInstagram />, link: "https://instagram.com/dochive" },
-          { icon: <FaYoutube />, link: "https://youtube.com/dochive" },
-        ].map((social, index) => (
-          <a
-            key={index}
-            href={social.link}
-            className="text-gray-400 hover:text-white transition text-2xl"
-          >
-            {social.icon}
-          </a>
-        ))}
-      </div>
-
-      {/* Footer Bottom */}
-      <div className="flex flex-col md:flex-row justify-center items-center text-gray-400 text-sm border-t border-gray-600 mt-8 pt-4 px-6">
-        &copy; {new Date().getFullYear()} DocHive. All rights reserved.
       </div>
     </footer>
   );

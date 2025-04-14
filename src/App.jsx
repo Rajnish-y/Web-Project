@@ -4,14 +4,13 @@ import LandingPage from "./LandingPage";
 import Dashboard from "./doctor/components/layout/Dashboard";
 import DAuthPage from "./doctor/components/authentication/DAuthPage";
 import Header from "./doctor/components/layout/Header";
-import Sidebar from './doctor/components/layout/Sidebar'; // Ensure the filename matches exactly (case-sensitive).
+import Sidebar from './doctor/components/layout/Sidebar';
 import Footer from "./doctor/components/layout/Footer";
 import AppointmentList from "./doctor/components/layout/AppointmentList";
 import PatientList from "./doctor/components/layout/PatientList";
 import ProfileCard from "./doctor/components/layout/ProfileCard";
 import PAuthPage from "./patient/components/authentication/PAuthPage"
 import PDashboard from "./Pdash/PDashboard.jsx";
-import AiBot from "./Pdash/AiBot.jsx"
 import MapComponent from "./Pdash/MapComponent.jsx";
 import AppointmentBooking from "./Pdash/AppointmentBooking.jsx";
 
@@ -24,13 +23,12 @@ export default function App() {
         <Route path="/pauth" element={<PAuthPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/" element={<Dashboard />} />
-              <Route path="/appointments" element={<AppointmentList />} />
-              <Route path="/patients" element={<PatientList />} />
-              <Route path="/profile" element={<ProfileCard />} />
-              <Route path="/pdashboard" element={<PDashboard />} />
-              <Route path="/ai" element={<AiBot />} />
-              <Route path="/map" element = {<MapComponent />} />
-              <Route path="/appointment" element={<AppointmentBooking />} />
+        <Route path="/appointments" element={<AppointmentList />} />
+        <Route path="/patients" element={<PatientList />} />
+        <Route path="/profile" element={<ProfileCard />} />
+        <Route path="/pdashboard" element={<PDashboard />} />
+        <Route path="/map" element={<MapComponent />} />
+        <Route path="/appointment" element={<AppointmentBooking />} />
       </Routes>
     </Router>
   );
