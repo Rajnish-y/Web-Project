@@ -19,8 +19,8 @@ const DAuthPage = () => {
     appointmentCost: '',
     contactNumber: ''
   });
-    const navigate = useNavigate();
-  
+  const navigate = useNavigate();
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -95,7 +95,7 @@ const DAuthPage = () => {
           <Activity className="h-8 w-8 text-blue-700 mr-2" />
           <span className="text-xl font-bold text-blue-900">DOC HIVE</span>
         </div>
-        
+
         <div className="bg-blue-100 rounded-lg shadow-xl p-8">
           <div className="flex mb-8">
             <button

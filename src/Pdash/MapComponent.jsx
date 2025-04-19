@@ -13,33 +13,13 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
 
-// Custom doctor icons by department
-const departmentIcons = {
-  cardiology: new L.Icon({
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2909/2909553.png',
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -32],
-  }),
-  neurology: new L.Icon({
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/3059/3059518.png',
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -32],
-  }),
-  pediatrics: new L.Icon({
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/3344/3344032.png',
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -32],
-  }),
-  default: new L.Icon({
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/3305/3305803.png',
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -32],
-  }),
-};
+// Single default doctor icon for all departments
+const defaultDoctorIcon = new L.Icon({
+  iconUrl: 'https://cdn-icons-png.flaticon.com/512/3059/3059518.png',
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -32],
+});
 
 const DoctorPopup = ({ doctor }) => (
   <div className="min-w-[200px]">
@@ -80,12 +60,6 @@ const MapComponent = ({ doctorType }) => {
 
   // Default center (Chennai coordinates)
   const defaultCenter = useMemo(() => ({ lat: 12.9221, lng: 80.1953 }), []);
-
-  // Get appropriate icon for each doctor's department
-  const getDoctorIcon = useCallback((department) => {
-    const normalizedDept = department.toLowerCase();
-    return departmentIcons[normalizedDept] || departmentIcons.default;
-  }, []);
 
   // Fetch data
   useEffect(() => {
@@ -206,8 +180,8 @@ const MapComponent = ({ doctorType }) => {
               <button
                 key={dept}
                 className={`px-3 py-1.5 md:px-4 md:py-2 rounded-lg transition-all duration-200 text-sm md:text-base ${selectedDepartments.includes(dept)
-                    ? "bg-blue-600 text-white shadow-md"
-                    : "bg-gray-100 hover:bg-gray-200 text-gray-700"
+                  ? "bg-blue-600 text-white shadow-md"
+                  : "bg-gray-100 hover:bg-gray-200 text-gray-700"
                   }`}
                 onClick={() => toggleDepartment(dept)}
               >
@@ -235,7 +209,7 @@ const MapComponent = ({ doctorType }) => {
                 <Marker
                   key={doctor.doctorID}
                   position={[doctor.location.latitude, doctor.location.longitude]}
-                  icon={getDoctorIcon(doctor.department)}
+                  icon={defaultDoctorIcon}
                 >
                   <Popup className="min-w-[200px]">
                     <DoctorPopup doctor={doctor} />
@@ -266,16 +240,14 @@ const MapComponent = ({ doctorType }) => {
         <div className="w-full max-w-6xl bg-white p-4 rounded-lg shadow-md">
           <h3 className="font-semibold mb-2">Map Legend</h3>
           <div className="flex flex-wrap gap-4">
-            {Object.entries(departmentIcons).map(([dept, icon]) => (
-              <div key={dept} className="flex items-center">
-                <img
-                  src={icon.options.iconUrl}
-                  alt=""
-                  className="w-5 h-5 mr-2"
-                />
-                <span className="text-sm capitalize">{dept}</span>
-              </div>
-            ))}
+            <div className="flex items-center">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/3059/3059518.png"
+                alt=""
+                className="w-5 h-5 mr-2"
+              />
+              <span className="text-sm">Doctor</span>
+            </div>
             <div className="flex items-center">
               <img
                 src="https://cdn-icons-png.flaticon.com/512/4474/4474280.png"

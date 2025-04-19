@@ -219,7 +219,7 @@ const LandingPage = () => {
                   <Activity className="h-6 w-6 text-blue-400" />
                   <span className="text-xl font-bold">DOC HIVE</span>
                 </div>
-                <p className="text-gray-400">Revolutionizing healthcare connections since 2023</p>
+                <p className="text-gray-400">Revolutionizing healthcare connections since 2025</p>
               </div>
               <div>
                 <h3 className="font-bold text-lg mb-4">For Patients</h3>
