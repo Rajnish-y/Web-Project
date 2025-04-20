@@ -25,7 +25,6 @@ export default function FHeader() {
       }`}>
       <nav className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
-          {/* Logo */}
           <Link
             to="/"
             className="flex items-center space-x-2 group"
@@ -36,8 +35,6 @@ export default function FHeader() {
               DOC HIVE
             </span>
           </Link>
-
-          {/* Desktop Navigation */}
           <div className="flex items-center space-x-8">
             {navLinks.map((link) => (
               <Link

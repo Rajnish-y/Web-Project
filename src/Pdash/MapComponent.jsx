@@ -5,7 +5,6 @@ import "leaflet/dist/leaflet.css";
 import FHeader from "./FHeader";
 import FFooter from "./FFooter";
 
-// Fix for default marker icons
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
@@ -13,7 +12,6 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
 
-// Single default doctor icon for all departments
 const defaultDoctorIcon = new L.Icon({
   iconUrl: 'https://cdn-icons-png.flaticon.com/512/3059/3059518.png',
   iconSize: [32, 32],
@@ -58,10 +56,8 @@ const MapComponent = ({ doctorType }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Default center (Chennai coordinates)
   const defaultCenter = useMemo(() => ({ lat: 12.9221, lng: 80.1953 }), []);
 
-  // Fetch data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -70,7 +66,6 @@ const MapComponent = ({ doctorType }) => {
         if (!response.ok) throw new Error("Failed to load doctors");
         const data = await response.json();
 
-        // Ensure all doctors have valid locations
         const validDoctors = data.filter(doctor =>
           doctor.location &&
           typeof doctor.location.latitude === 'number' &&
@@ -92,7 +87,6 @@ const MapComponent = ({ doctorType }) => {
     fetchData();
   }, []);
 
-  // Get user location
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -112,7 +106,6 @@ const MapComponent = ({ doctorType }) => {
     }
   }, [defaultCenter]);
 
-  // Filter doctors
   const filteredDoctors = useMemo(() =>
     doctors.filter(doctor =>
       selectedDepartments.includes(doctor.department) &&
@@ -120,14 +113,12 @@ const MapComponent = ({ doctorType }) => {
     ),
     [doctors, selectedDepartments, doctorType]);
 
-  // Toggle department filter
   const toggleDepartment = useCallback((dept) => {
     setSelectedDepartments(prev =>
       prev.includes(dept) ? prev.filter(d => d !== dept) : [...prev, dept]
     );
   }, []);
 
-  // Determine center point
   const center = userLocation || defaultCenter;
 
   if (loading) {
@@ -170,7 +161,6 @@ const MapComponent = ({ doctorType }) => {
       <FHeader />
 
       <main className="flex flex-col items-center p-4 md:p-6 min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 pt-20 pb-16">
-        {/* Department filter */}
         <div className="w-full max-w-6xl bg-white p-4 md:p-6 shadow-lg rounded-xl mb-6">
           <h2 className="text-xl font-semibold mb-4 text-center text-gray-800">
             Find {doctorType ? doctorType : ''} Doctors Near You
@@ -191,7 +181,6 @@ const MapComponent = ({ doctorType }) => {
           </div>
         </div>
 
-        {/* Map container */}
         <div className="w-full max-w-6xl bg-white shadow-xl rounded-xl overflow-hidden mb-6">
           {center && center.lat && center.lng && (
             <MapContainer
@@ -235,8 +224,6 @@ const MapComponent = ({ doctorType }) => {
             </MapContainer>
           )}
         </div>
-
-        {/* Legend */}
         <div className="w-full max-w-6xl bg-white p-4 rounded-lg shadow-md">
           <h3 className="font-semibold mb-2">Map Legend</h3>
           <div className="flex flex-wrap gap-4">
@@ -259,7 +246,6 @@ const MapComponent = ({ doctorType }) => {
           </div>
         </div>
 
-        {/* Doctor count */}
         <div className="w-full max-w-6xl text-right text-sm text-gray-600 mt-4">
           Showing {filteredDoctors.length} {filteredDoctors.length === 1 ? 'doctor' : 'doctors'}
         </div>

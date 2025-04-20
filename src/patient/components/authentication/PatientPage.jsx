@@ -1,10 +1,10 @@
 import React from "react";
-import PAuthPage from "./PAuthPage"; // Import the Patient Auth Page component
+import PAuthPage from "./PAuthPage";
 
 const PatientPage = () => {
   return (
     <div>
-      <PAuthPage /> {/* Show Patient Auth Form */}
+      <PAuthPage />
     </div>
   );
 };

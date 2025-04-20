@@ -46,7 +46,6 @@ const PAuthPage = () => {
       console.log("Attempting patient auth with:", email, password);
 
       if (isLogin) {
-        // Login with Firebase Auth only (no Firestore)
         const userCredential = await signInWithEmailAndPassword(
           auth,
           email,
@@ -56,7 +55,6 @@ const PAuthPage = () => {
         console.log('Patient login successful:', userCredential.user);
         navigate("/pdashboard");
       } else {
-        // Sign-up with Firebase Auth only (no Firestore for now)
         const userCredential = await createUserWithEmailAndPassword(
           auth,
           email,

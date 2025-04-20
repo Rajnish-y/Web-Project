@@ -59,7 +59,6 @@ const Sidebar = () => {
       className={`${expanded ? "w-64" : "w-20"} min-h-screen p-4 bg-white/90
       backdrop-blur-lg shadow-xl border-r border-white/40 transition-all duration-300 ease-in-out`}
     >
-      {/* Collapse/Expand Button */}
       <button
         onClick={() => setExpanded(!expanded)}
         className="absolute -right-3 top-6 bg-white rounded-full p-1 shadow-md border border-gray-200
@@ -71,7 +70,6 @@ const Sidebar = () => {
         />
       </button>
 
-      {/* Logo/Brand */}
       <div className="flex items-center justify-center mb-8 pt-4">
         {expanded ? (
           <h2 className="text-xl font-bold text-indigo-700">DocHive</h2>
@@ -79,8 +77,6 @@ const Sidebar = () => {
           <div className="w-8 h-8 rounded-full bg-indigo-600"></div>
         )}
       </div>
-
-      {/* Main Navigation */}
       <ul className="space-y-2">
         {navItems.map((item, index) => (
           <React.Fragment key={index}>
@@ -108,8 +104,6 @@ const Sidebar = () => {
                 )}
               </Link>
             </li>
-
-            {/* Submenu Items */}
             {expanded && item.subItems && activeSubmenu === item.text && (
               <ul className="ml-8 space-y-1">
                 {item.subItems.map((subItem, subIndex) => (
@@ -129,10 +123,7 @@ const Sidebar = () => {
           </React.Fragment>
         ))}
       </ul>
-
-      {/* Bottom Section */}
       <div className="absolute bottom-6 left-0 right-0 px-4">
-        {/* Support Link */}
         <Link
           to="/contact"
           className={`flex items-center py-3 px-4 rounded-lg transition text-indigo-600
@@ -144,8 +135,6 @@ const Sidebar = () => {
           />
           {expanded && "Support"}
         </Link>
-
-        {/* User Profile (Mini) */}
         <div className={`flex items-center mt-4 ${expanded ? "px-4" : "justify-center"}`}>
           <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
             <span className="text-xs font-medium">JD</span>

@@ -101,7 +101,6 @@ const Dashboard = () => {
         <Sidebar />
         <main className="flex-1 p-6 overflow-auto">
           <div className="max-w-7xl mx-auto">
-            {/* Welcome Section */}
             <section className="mb-10">
               <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
                 Welcome back, <span className="text-blue-600">{loggedInDoctor?.name || "Doctor"}</span>!
@@ -110,8 +109,6 @@ const Dashboard = () => {
                 Here's what's happening with your practice today.
               </p>
             </section>
-
-            {/* Stats Overview */}
             <section className="mb-10">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <StatCard
@@ -144,8 +141,6 @@ const Dashboard = () => {
                 />
               </div>
             </section>
-
-            {/* Doctor Profile Section */}
             {loggedInDoctor && (
               <section className="mb-10 bg-white rounded-xl shadow-md overflow-hidden">
                 <div className="p-6 border-b">
@@ -198,8 +193,6 @@ const Dashboard = () => {
                 </div>
               </section>
             )}
-
-            {/* Quick Info Cards */}
             <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <InfoCard
                 icon={Clock}

@@ -23,8 +23,6 @@ const SettingsTab = () => {
   return (
     <form onSubmit={handleSubmit} className="bg-white/20 backdrop-blur-lg border border-white/30 rounded-xl p-6 max-w-lg w-full">
       <h2 className="text-2xl font-semibold text-[#0D2853] mb-6">Settings</h2>
-
-      {/* Notification Toggle */}
       <div className="flex justify-between items-center mb-5 p-3 bg-white/10 rounded-lg">
         <div>
           <p className="text-gray-700 font-medium">Enable Notifications</p>
@@ -42,7 +40,6 @@ const SettingsTab = () => {
         </label>
       </div>
 
-      {/* Dark Mode Toggle */}
       <div className="flex justify-between items-center mb-5 p-3 bg-white/10 rounded-lg">
         <div>
           <p className="text-gray-700 font-medium">Dark Mode</p>
@@ -59,8 +56,6 @@ const SettingsTab = () => {
           <div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-purple-500 after:absolute after:top-0.5 after:left-[2px] after:w-5 after:h-5 after:bg-white after:rounded-full after:transition-all peer-checked:after:translate-x-5"></div>
         </label>
       </div>
-
-      {/* Action Buttons */}
       <div className="flex gap-3">
         <button
           type="submit"

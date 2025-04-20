@@ -6,14 +6,12 @@ import FHeader from "./FHeader";
 import FFooter from "./FFooter";
 import PFeaturesSection from "./PFeaturesSection";
 
-// Hero Section
 const HeroSection = () => {
   const navigate = useNavigate();
   const [hovered, setHovered] = useState(false);
 
   return (
     <section className="pt-32 pb-20 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
-      {/* Animated background elements */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-1/4 left-1/4 w-32 h-32 rounded-full bg-blue-400 filter blur-3xl"></div>
         <div className="absolute bottom-1/3 right-1/4 w-40 h-40 rounded-full bg-purple-500 filter blur-3xl"></div>
@@ -65,7 +63,6 @@ const HeroSection = () => {
   );
 };
 
-// Features data (moved to separate file or can be passed as props)
 const features = [
   {
     title: "AI Symptom Checker",
@@ -99,7 +96,6 @@ const features = [
   },
 ];
 
-// Stats Section
 const StatsSection = () => {
   const stats = [
     { value: "10,000+", label: "Patients Helped" },
@@ -124,14 +120,13 @@ const StatsSection = () => {
   );
 };
 
-// Main Dashboard Component
 const PDashboard = () => (
   <div className="bg-gray-900 min-h-screen">
     <FHeader />
     <HeroSection />
     <StatsSection />
     <Timeline data={features} />
-    <PFeaturesSection features={features} /> {/* Using the imported PFeaturesSection component */}
+    <PFeaturesSection features={features} />
     <FFooter />
   </div>
 );

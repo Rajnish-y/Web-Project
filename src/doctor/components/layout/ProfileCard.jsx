@@ -51,7 +51,6 @@ const Profile = () => {
         <Sidebar />
         <main className="flex-1 p-6 overflow-auto">
           <div className="max-w-4xl mx-auto">
-            {/* Profile Header */}
             <div className="bg-white rounded-xl shadow-md p-8 text-center">
               <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-lg mx-auto">
                 <img
@@ -101,29 +100,25 @@ const Profile = () => {
                 )}
               </div>
             </div>
-
-            {/* Edit/Save Button */}
             <div className="flex justify-end mt-4">
               <button
                 onClick={() => setEditMode(!editMode)}
                 className={`px-4 py-2 rounded-lg font-medium ${editMode
-                    ? "bg-green-500 hover:bg-green-600 text-white"
-                    : "bg-blue-500 hover:bg-blue-600 text-white"
+                  ? "bg-green-500 hover:bg-green-600 text-white"
+                  : "bg-blue-500 hover:bg-blue-600 text-white"
                   } transition-colors`}
               >
                 {editMode ? "Save Profile" : "Edit Profile"}
               </button>
             </div>
-
-            {/* Tabs */}
             <div className="flex space-x-2 mt-8 overflow-x-auto pb-2">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${activeTab === tab.id
-                      ? "bg-blue-500 text-white"
-                      : "bg-white text-gray-700 hover:bg-gray-100"
+                    ? "bg-blue-500 text-white"
+                    : "bg-white text-gray-700 hover:bg-gray-100"
                     }`}
                 >
                   {tab.icon}
@@ -132,9 +127,7 @@ const Profile = () => {
               ))}
             </div>
 
-            {/* Tab Content */}
             <div className="mt-6">
-              {/* About Tab */}
               {activeTab === "about" && (
                 <div className="bg-white rounded-xl shadow-md p-6">
                   <h2 className="text-2xl font-semibold text-gray-800 flex items-center">
@@ -168,7 +161,6 @@ const Profile = () => {
                 </div>
               )}
 
-              {/* Contact Tab */}
               {activeTab === "contact" && (
                 <div className="bg-white rounded-xl shadow-md p-6">
                   <h2 className="text-2xl font-semibold text-gray-800 flex items-center">
@@ -234,8 +226,6 @@ const Profile = () => {
                   </div>
                 </div>
               )}
-
-              {/* Hospital Tab */}
               {activeTab === "hospital" && (
                 <div className="bg-white rounded-xl shadow-md p-6">
                   <h2 className="text-2xl font-semibold text-gray-800 flex items-center">
@@ -268,8 +258,6 @@ const Profile = () => {
                   </div>
                 </div>
               )}
-
-              {/* Schedule Tab */}
               {activeTab === "schedule" && (
                 <div className="bg-white rounded-xl shadow-md p-6">
                   <h2 className="text-2xl font-semibold text-gray-800 flex items-center">

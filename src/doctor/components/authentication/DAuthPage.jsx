@@ -5,7 +5,6 @@ import { auth } from "../../../firebase/firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
 function DAuthPage() {
-  // Separate state variables instead of a form object
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(true);
@@ -14,7 +13,6 @@ function DAuthPage() {
 
   const navigate = useNavigate();
 
-  // Explicit handlers for each field
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -29,7 +27,6 @@ function DAuthPage() {
     setError('');
 
     try {
-      // Input validation
       if (!email.includes('@')) {
         throw new Error('Please enter a valid email');
       }
@@ -38,24 +35,20 @@ function DAuthPage() {
         throw new Error('Password must be at least 6 characters');
       }
 
-      console.log("Attempting auth with:", email, password); // Debug log
+      console.log("Attempting auth with:", email, password);
 
       if (isLogin) {
-        // Login with Firebase
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         console.log("Login successful:", userCredential.user);
       } else {
-        // Register with Firebase
+
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         console.log("Registration successful:", userCredential.user);
       }
-
-      // Navigate to dashboard after successful auth
       navigate('/dashboard');
     } catch (error) {
       console.error("Firebase auth error:", error.code, error.message);
 
-      // Handle specific Firebase error codes
       if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
         setError('Invalid email or password');
       } else if (error.code === 'auth/email-already-in-use') {
@@ -65,7 +58,6 @@ function DAuthPage() {
       } else if (error.code === 'auth/invalid-email') {
         setError('Invalid email format');
       } else {
-        // Generic error message
         setError(error.message);
       }
     } finally {

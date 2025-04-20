@@ -1,95 +1,145 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Calendar, Clock, User, CheckCircle, AlertCircle, XCircle, Plus, ChevronDown, Frown, Smile } from "lucide-react";
 import Header from "./Header";
 import Footer from "./Footer";
 import Sidebar from "./Sidebar";
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, updateDoc, query, where, onSnapshot } from "firebase/firestore";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC8ayp5FwqtWhLlfIGdh7WGUjiPnZsLQpI",
+  authDomain: "doc-hive.firebaseapp.com",
+  projectId: "doc-hive",
+  storageBucket: "doc-hive.firebasestorage.app",
+  messagingSenderId: "830048191692",
+  appId: "1:830048191692:web:6469bdcd119b7b49f9ae69"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const AppointmentList = () => {
-  const [appointments, setAppointments] = useState([
-    {
-      id: 1,
-      patient: "Sarah Johnson",
-      time: "09:00 AM",
-      type: "Check-up",
-      status: "Confirmed",
-      avatar: "https://randomuser.me/api/portraits/women/44.jpg"
-    },
-    {
-      id: 2,
-      patient: "Mike Peters",
-      time: "10:30 AM",
-      type: "Follow-up",
-      status: "Confirmed",
-      avatar: "https://randomuser.me/api/portraits/men/32.jpg"
-    },
-    {
-      id: 3,
-      patient: "Emma Wilson",
-      time: "02:00 PM",
-      type: "Consultation",
-      status: "Confirmed",
-      avatar: "https://randomuser.me/api/portraits/women/68.jpg"
-    },
-  ]);
-
-  const [appointmentRequests, setAppointmentRequests] = useState([
-    {
-      id: 4,
-      patient: "John Doe",
-      time: "11:00 AM",
-      type: "Check-up",
-      status: "Pending",
-      avatar: "https://randomuser.me/api/portraits/men/75.jpg"
-    },
-    {
-      id: 5,
-      patient: "Alice Brown",
-      time: "01:30 PM",
-      type: "Consultation",
-      status: "Pending",
-      avatar: "https://randomuser.me/api/portraits/women/63.jpg"
-    },
-  ]);
-
+  const [appointments, setAppointments] = useState([]);
+  const [appointmentRequests, setAppointmentRequests] = useState([]);
+  const [completedAppointments, setCompletedAppointments] = useState(0);
+  const [cancelledAppointments, setCancelledAppointments] = useState(0);
   const [newAppointment, setNewAppointment] = useState({
     patient: "",
     time: "",
     type: "Check-up"
   });
   const [showAddForm, setShowAddForm] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const handleAccept = (id) => {
-    const acceptedRequest = appointmentRequests.find(req => req.id === id);
-    setAppointments([...appointments, { ...acceptedRequest, status: "Confirmed" }]);
-    setAppointmentRequests(appointmentRequests.filter(req => req.id !== id));
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const confirmedQuery = query(collection(db, "appointments"), where("status", "==", "Confirmed"));
+        const pendingQuery = query(collection(db, "appointments"), where("status", "==", "Pending"));
+        const completedQuery = query(collection(db, "appointments"), where("status", "==", "Completed"));
+        const cancelledQuery = query(collection(db, "appointments"), where("status", "==", "Cancelled"));
+        const confirmedUnsubscribe = onSnapshot(confirmedQuery, (querySnapshot) => {
+          const confirmedData = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          }));
+          setAppointments(confirmedData);
+        });
+
+        const pendingUnsubscribe = onSnapshot(pendingQuery, (querySnapshot) => {
+          const pendingData = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          }));
+          setAppointmentRequests(pendingData);
+        });
+
+        const completedUnsubscribe = onSnapshot(completedQuery, (querySnapshot) => {
+          setCompletedAppointments(querySnapshot.size);
+        });
+
+        const cancelledUnsubscribe = onSnapshot(cancelledQuery, (querySnapshot) => {
+          setCancelledAppointments(querySnapshot.size);
+        });
+
+        setLoading(false);
+
+        return () => {
+          confirmedUnsubscribe();
+          pendingUnsubscribe();
+          completedUnsubscribe();
+          cancelledUnsubscribe();
+        };
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleAccept = async (id) => {
+    try {
+      await updateDoc(doc(db, "appointments", id), {
+        status: "Confirmed"
+      });
+
+    } catch (error) {
+      console.error("Error accepting appointment:", error);
+    }
   };
 
-  const handleReject = (id) => {
-    setAppointmentRequests(appointmentRequests.filter(req => req.id !== id));
+  const handleReject = async (id) => {
+    try {
+      await updateDoc(doc(db, "appointments", id), {
+        status: "Cancelled"
+      });
+    } catch (error) {
+      console.error("Error rejecting appointment:", error);
+    }
   };
 
-  const handleAddRequest = (e) => {
+  const handleAddRequest = async (e) => {
     e.preventDefault();
     if (!newAppointment.patient || !newAppointment.time) return;
 
-    const newRequest = {
-      id: Math.max(...appointmentRequests.map(r => r.id), 0) + 1,
-      patient: newAppointment.patient,
-      time: newAppointment.time,
-      type: newAppointment.type,
-      status: "Pending",
-      avatar: `https://randomuser.me/api/portraits/${Math.random() > 0.5 ? 'men' : 'women'}/${Math.floor(Math.random() * 100)}.jpg`
-    };
+    try {
+      const gender = Math.random() > 0.5 ? 'men' : 'women';
+      const randomId = Math.floor(Math.random() * 100);
+      const avatar = `https://randomuser.me/api/portraits/${gender}/${randomId}.jpg`;
 
-    setAppointmentRequests([...appointmentRequests, newRequest]);
-    setNewAppointment({ patient: "", time: "", type: "Check-up" });
-    setShowAddForm(false);
+      await addDoc(collection(db, "appointments"), {
+        patient: newAppointment.patient,
+        time: newAppointment.time,
+        type: newAppointment.type,
+        status: "Pending",
+        avatar: avatar,
+        createdAt: new Date()
+      });
+
+      setNewAppointment({ patient: "", time: "", type: "Check-up" });
+      setShowAddForm(false);
+    } catch (error) {
+      console.error("Error adding appointment:", error);
+    }
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewAppointment(prev => ({ ...prev, [name]: value }));
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading appointments...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -98,7 +148,6 @@ const AppointmentList = () => {
         <Sidebar />
         <main className="flex-1 p-6 overflow-auto">
           <div className="max-w-7xl mx-auto">
-            {/* Header Section */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
               <div>
                 <h1 className="text-3xl font-bold text-gray-800">Appointments</h1>
@@ -115,7 +164,6 @@ const AppointmentList = () => {
               </div>
             </div>
 
-            {/* Add Appointment Form */}
             {showAddForm && (
               <div className="bg-white rounded-lg shadow-md p-6 mb-8">
                 <h2 className="text-xl font-semibold mb-4">Add New Appointment</h2>
@@ -178,7 +226,6 @@ const AppointmentList = () => {
               </div>
             )}
 
-            {/* Stats Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
                 <div className="flex items-center">
@@ -209,7 +256,7 @@ const AppointmentList = () => {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-500">Cancelled</p>
-                    <p className="text-2xl font-semibold text-gray-800">1</p>
+                    <p className="text-2xl font-semibold text-gray-800">{cancelledAppointments}</p>
                   </div>
                 </div>
               </div>
@@ -220,13 +267,11 @@ const AppointmentList = () => {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-500">Completed</p>
-                    <p className="text-2xl font-semibold text-gray-800">10</p>
+                    <p className="text-2xl font-semibold text-gray-800">{completedAppointments}</p>
                   </div>
                 </div>
               </div>
             </div>
-
-            {/* Confirmed Appointments */}
             <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
               <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                 <h2 className="text-lg font-semibold text-gray-800 flex items-center">
@@ -249,37 +294,43 @@ const AppointmentList = () => {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {appointments.map(appointment => (
-                      <tr key={appointment.id} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <img className="h-10 w-10 rounded-full mr-3" src={appointment.avatar} alt={appointment.patient} />
-                            <div>
-                              <div className="font-medium text-gray-900">{appointment.patient}</div>
-                              <div className="text-sm text-gray-500">Patient ID: {appointment.id}</div>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <Clock className="h-4 w-4 text-gray-400 mr-2" />
-                            <span className="text-gray-900">{appointment.time}</span>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-gray-900">{appointment.type}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                            {appointment.status}
-                          </span>
+                    {appointments.length === 0 ? (
+                      <tr>
+                        <td colSpan="4" className="px-6 py-8 text-center text-gray-500">
+                          No confirmed appointments found.
                         </td>
                       </tr>
-                    ))}
+                    ) : (
+                      appointments.map(appointment => (
+                        <tr key={appointment.id} className="hover:bg-gray-50 transition-colors">
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center">
+                              <img className="h-10 w-10 rounded-full mr-3" src={appointment.avatar} alt={appointment.patient} />
+                              <div>
+                                <div className="font-medium text-gray-900">{appointment.patient}</div>
+                                <div className="text-sm text-gray-500">Patient ID: {appointment.id.substring(0, 8)}</div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center">
+                              <Clock className="h-4 w-4 text-gray-400 mr-2" />
+                              <span className="text-gray-900">{appointment.time}</span>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-gray-900">{appointment.type}</td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                              {appointment.status}
+                            </span>
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
             </div>
-
-            {/* Appointment Requests */}
             <div className="bg-white rounded-xl shadow-sm overflow-hidden">
               <div className="px-6 py-4 border-b border-gray-200">
                 <h2 className="text-lg font-semibold text-gray-800 flex items-center">
@@ -312,7 +363,7 @@ const AppointmentList = () => {
                               <img className="h-10 w-10 rounded-full mr-3" src={request.avatar} alt={request.patient} />
                               <div>
                                 <div className="font-medium text-gray-900">{request.patient}</div>
-                                <div className="text-sm text-gray-500">Patient ID: {request.id}</div>
+                                <div className="text-sm text-gray-500">Patient ID: {request.id.substring(0, 8)}</div>
                               </div>
                             </div>
                           </td>

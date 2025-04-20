@@ -1,10 +1,10 @@
 import React from "react";
-import DAuthPage from "./DAuthPage"; // Import the Doctor Auth Page component
+import DAuthPage from "./DAuthPage";
 
 const DoctorPage = () => {
   return (
     <div>
-      <DAuthPage /> {/* Show Doctor Auth Form */}
+      <DAuthPage />
     </div>
   );
 };

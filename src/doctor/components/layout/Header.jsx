@@ -9,7 +9,6 @@ const Header = () => {
   const settingsRef = useRef(null);
   const notificationsRef = useRef(null);
 
-  // Sample notifications data
   const [notifications, setNotifications] = useState([
     { id: 1, message: "New appointment request from Sarah Johnson", time: "10 mins ago", read: false },
     { id: 2, message: "Your prescription was approved", time: "2 hours ago", read: true },
@@ -17,7 +16,6 @@ const Header = () => {
     { id: 4, message: "New message from patient Mike Peters", time: "2 days ago", read: true }
   ]);
 
-  // Close dropdowns when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (settingsRef.current && !settingsRef.current.contains(event.target)) {
@@ -51,15 +49,11 @@ const Header = () => {
     <header className="sticky top-0 z-50 bg-white shadow-sm">
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
           <div className="flex items-center">
             <Activity className="h-8 w-8 text-blue-600 mr-2" />
             <span className="text-xl font-bold text-gray-800">DOC HIVE</span>
           </div>
-
-          {/* Navigation Icons */}
           <div className="flex items-center space-x-6">
-            {/* Notifications */}
             <div className="relative" ref={notificationsRef}>
               <button
                 onClick={() => {
@@ -75,8 +69,6 @@ const Header = () => {
                   </span>
                 )}
               </button>
-
-              {/* Notifications Dropdown */}
               {showNotifications && (
                 <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden z-20">
                   <div className="p-4 border-b border-gray-100 flex justify-between items-center">
@@ -114,8 +106,6 @@ const Header = () => {
                 </div>
               )}
             </div>
-
-            {/* Settings */}
             <div className="relative" ref={settingsRef}>
               <button
                 onClick={() => {
@@ -127,7 +117,6 @@ const Header = () => {
                 <Settings className="h-6 w-6" />
               </button>
 
-              {/* Settings Dropdown */}
               {showSettings && (
                 <div className="absolute right-0 mt-2 w-72 bg-white rounded-lg shadow-xl border border-gray-100 z-20">
                   <div className="p-4 border-b border-gray-100">
@@ -137,8 +126,6 @@ const Header = () => {
                 </div>
               )}
             </div>
-
-            {/* User Profile */}
             <div className="flex items-center space-x-2 ml-2">
               <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
                 <User className="h-5 w-5 text-blue-600" />

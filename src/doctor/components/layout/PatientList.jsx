@@ -10,7 +10,6 @@ const PatientList = () => {
   const [expandedPatient, setExpandedPatient] = useState(null);
   const [sortConfig, setSortConfig] = useState({ key: "lastVisit", direction: "desc" });
 
-  // Sample patient data
   const patientData = {
     recent: [
       {
@@ -73,7 +72,6 @@ const PatientList = () => {
     ]
   };
 
-  // Sorting functionality
   const requestSort = (key) => {
     let direction = "asc";
     if (sortConfig.key === key && sortConfig.direction === "asc") {
@@ -92,13 +90,10 @@ const PatientList = () => {
     return 0;
   });
 
-  // Filter patients based on search term
   const filteredPatients = sortedPatients.filter(patient =>
     patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     patient.condition.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  // Format date for display
   const formatDate = (dateString) => {
     if (!dateString) return "Not scheduled";
     const options = { year: 'numeric', month: 'short', day: 'numeric' };
@@ -112,7 +107,6 @@ const PatientList = () => {
         <Sidebar />
         <main className="flex-1 p-6 overflow-auto">
           <div className="max-w-7xl mx-auto">
-            {/* Page Header */}
             <div className="mb-8">
               <h1 className="text-3xl font-bold text-gray-800 mb-2">
                 Patient Records
@@ -121,10 +115,7 @@ const PatientList = () => {
                 Manage your patient information and medical history
               </p>
             </div>
-
-            {/* Controls Section */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-              {/* Tabs */}
               <div className="flex space-x-2 bg-white p-1 rounded-lg shadow-sm">
                 {[
                   { id: "recent", label: "Recent Patients" },
@@ -134,16 +125,14 @@ const PatientList = () => {
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${activeTab === tab.id
-                        ? "bg-blue-600 text-white shadow-md"
-                        : "text-gray-600 hover:bg-gray-100"
+                      ? "bg-blue-600 text-white shadow-md"
+                      : "text-gray-600 hover:bg-gray-100"
                       }`}
                   >
                     {tab.label}
                   </button>
                 ))}
               </div>
-
-              {/* Search and Add Patient */}
               <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
                 <div className="relative flex-grow">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -164,9 +153,7 @@ const PatientList = () => {
               </div>
             </div>
 
-            {/* Patient Table */}
             <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-              {/* Table Header */}
               <div className="grid grid-cols-12 gap-4 px-6 py-3 bg-gray-100 border-b border-gray-200">
                 <div className="col-span-4 font-medium text-gray-500">
                   <button
@@ -194,8 +181,6 @@ const PatientList = () => {
                 <div className="col-span-2 font-medium text-gray-500">Next Appointment</div>
                 <div className="col-span-2 font-medium text-gray-500">Actions</div>
               </div>
-
-              {/* Patient Rows */}
               {filteredPatients.length > 0 ? (
                 filteredPatients.map(patient => (
                   <div
@@ -247,8 +232,6 @@ const PatientList = () => {
                         <Stethoscope className="h-5 w-5" />
                       </button>
                     </div>
-
-                    {/* Expanded Row */}
                     {expandedPatient === patient.id && (
                       <div className="col-span-12 pt-3 pb-2">
                         <div className="bg-white border border-gray-200 rounded-lg p-4">

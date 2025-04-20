@@ -55,7 +55,6 @@ const PFeaturesSection = () => {
               key={index}
               className="relative p-8 bg-gray-800 rounded-xl shadow-lg"
             >
-              {/* Gradient top border */}
               <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${feature.color} rounded-t-xl`}></div>
 
               <div className="flex flex-col h-full">
@@ -73,8 +72,6 @@ const PFeaturesSection = () => {
               </div>
             </div>
           ))}
-
-          {/* Non-interactive Info Card */}
           <div className="relative p-8 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl border-2 border-gray-700">
             <div className="flex flex-col h-full justify-center">
               <div className="p-3 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 bg-opacity-20 w-fit mb-6">

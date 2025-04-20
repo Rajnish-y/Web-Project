@@ -17,9 +17,7 @@ const Footer = () => {
   return (
     <footer className="bg-gradient-to-br from-[#0F172A] to-[#1E293B] text-white">
       <div className="container mx-auto px-6 py-12">
-        {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          {/* Contact Info */}
           <div className="space-y-6">
             <h3 className="text-xl font-bold text-green-400 flex items-center">
               <span className="w-1 h-6 bg-green-400 mr-2"></span>
@@ -60,8 +58,6 @@ const Footer = () => {
               </div>
             </div>
           </div>
-
-          {/* Solutions */}
           <div>
             <h3 className="text-xl font-bold text-green-400 flex items-center mb-6">
               <span className="w-1 h-6 bg-green-400 mr-2"></span>
@@ -85,8 +81,6 @@ const Footer = () => {
               ))}
             </ul>
           </div>
-
-          {/* Company */}
           <div>
             <h3 className="text-xl font-bold text-green-400 flex items-center mb-6">
               <span className="w-1 h-6 bg-green-400 mr-2"></span>
@@ -110,8 +104,6 @@ const Footer = () => {
               ))}
             </ul>
           </div>
-
-          {/* Social Media */}
           <div>
             <h3 className="text-xl font-bold text-green-400 flex items-center mb-6">
               <span className="w-1 h-6 bg-green-400 mr-2"></span>
@@ -142,10 +134,8 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Divider */}
         <div className="border-t border-gray-700 my-8"></div>
 
-        {/* Footer Bottom */}
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0">
             <p className="text-gray-400 text-sm">
