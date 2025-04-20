@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Activity } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { setDoc, doc } from "firebase/firestore";
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 const DAuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({
-    doctorID: '',
+    email: '',
     password: '',
     name: '',
     department: '',
@@ -22,64 +24,34 @@ const DAuthPage = () => {
   const navigate = useNavigate();
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    console.log('Form submitted:', formData);
+    const { email, password, name, department, qualification, dob, age, bloodGroup, latitude, longitude, appointmentCost, contactNumber } = formData;
 
-    if (isLogin) {
-      // Login: send only doctorID and password
-      fetch('http://localhost:4000/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          doctorID: formData.doctorID,
-          password: formData.password
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      const user = auth.currentUser;
+      if (user) {
+        await setDoc(doc(db, "Users", user.uid), {
+          email: user.email,
+          name: name,
+          department: department,
+          qualification: qualification,
+          dob: dob,
+          age: age,
+          bloodGroup: bloodGroup,
+          latitude: latitude,
+          longitude: longitude,
+          appointmentCost: appointmentCost,
+          contactNumber: contactNumber
         })
-      })
-        .then((res) => {
-          if (!res.ok) {
-            return res.json().then((data) => {
-              throw new Error(data.message || 'Invalid credentials');
-            });
-          }
-          return res.json();
-        })
-        .then((data) => {
-          console.log('Login response:', data);
-          navigate("/dashboard");
-          // Handle login success (clear error, redirect, etc.)
-        })
-        .catch((error) => {
-          setError(error.message);
-          console.error('Error during login:', error);
-        });
-    } else {
-      // Sign up: send full form data
-      fetch('http://localhost:4000/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      })
-        .then((res) => {
-          if (!res.ok) {
-            return res.json().then((data) => {
-              throw new Error(data.message || 'Signup failed');
-            });
-          }
-          return res.json();
-        })
-        .then((data) => {
-          console.log('Signup response:', data);
-          navigate("/dashboard");
-          // Handle signup success (clear error, redirect, etc.)
-        })
-        .catch((error) => {
-          setError(error.message);
-          console.error('Error during signup:', error);
-        });
+        console.log("Registration successful!");
+        window.location.href = "/dashboard";
+      }
+    } catch (error) {
+      console.log(error.message);
     }
-  };
+  }
 
   const handleChange = (e) => {
     setFormData({
@@ -118,13 +90,13 @@ const DAuthPage = () => {
             {isLogin ? (
               <>
                 <div>
-                  <label className="block text-blue-900 mb-2">Doctor ID</label>
+                  <label className="block text-blue-900 mb-2">Email</label>
                   <input
-                    type="text"
-                    name="doctorID"
+                    type="email"
+                    name="email"
                     className="w-full px-4 py-2 rounded-lg bg-blue-50 text-blue-900 border border-blue-400 focus:border-blue-700 focus:outline-none"
-                    placeholder="Enter your Doctor ID"
-                    value={formData.doctorID}
+                    placeholder="Enter your email address"
+                    value={formData.email}
                     onChange={handleChange}
                   />
                 </div>

@@ -13,7 +13,6 @@ import PAuthPage from "./patient/components/authentication/PAuthPage"
 import PDashboard from "./Pdash/PDashboard.jsx";
 import MapComponent from "./Pdash/MapComponent.jsx";
 import AppointmentBooking from "./Pdash/AppointmentBooking.jsx";
-
 export default function App() {
   return (
     <Router>
