@@ -1,0 +1,20 @@
+# Git files
+.git
+.gitignore
+
+# Node modules
+node_modules
+
+# Build artifacts
+build
+npm-debug.log
+yarn-error.log
+
+# Environment variables
+.env*
+!.env.example
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
