@@ -1,0 +1,14 @@
+[
+      {
+        "patient": "John Doe",
+        "time": "11:00 AM",
+        "type": "Check-up",
+        "doctor": "2015"
+      },
+      {
+        "patient": "Alice Brown",
+        "time": "01:30 PM",
+        "type": "Consultation",
+        "status": "2018"
+      }
+]

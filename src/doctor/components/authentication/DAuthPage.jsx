@@ -47,7 +47,8 @@ const DAuthPage = () => {
         })
         .then((data) => {
           console.log('Login response:', data);
-          navigate("/dashboard");
+        localStorage.setItem('role', 'doctor');  
+	navigate("/dashboard");
           // Handle login success (clear error, redirect, etc.)
         })
         .catch((error) => {
@@ -71,6 +72,7 @@ const DAuthPage = () => {
         })
         .then((data) => {
           console.log('Signup response:', data);
+	  localStorage.setItem('role', 'doctor');
           navigate("/dashboard");
           // Handle signup success (clear error, redirect, etc.)
         })

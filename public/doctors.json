@@ -478,5 +478,19 @@
       "longitude": null
     },
     "contact": "8753658736"
+  },
+  {
+    "doctorID": "",
+    "password": "",
+    "name": "",
+    "department": "",
+    "qualification": "",
+    "dob": "",
+    "age": null,
+    "bloodGroup": "",
+    "latitude": "",
+    "longitude": "",
+    "appointmentCost": null,
+    "contactNumber": ""
   }
 ]

@@ -18,38 +18,76 @@ const PAuthPage = () => {
     setError('');
     setIsLoading(true);
 
-    if (!formData.email || !formData.password || (!isLogin && !formData.name)) {
-      setError('Please fill in all required fields.');
+    if (!formData.email || !formData.password) {
+      setError('Email and password are required.');
       setIsLoading(false);
       return;
     }
 
     try {
-      const endpoint = isLogin ? 'login' : 'signup';
-      const payload = isLogin
-        ? { email: formData.email, password: formData.password }
-        : formData;
+	if (isLogin) {
+	  const response = await fetch('http://localhost:5000/login', {
+	    method: 'POST',
+	    headers: {
+	      'Content-Type': 'application/json',
+	    },
+	    body: JSON.stringify({
+	      email: formData.email,
+	      password: formData.password,
+	    }),
+	  });
 
-      const response = await fetch(`http://localhost:5000/${endpoint}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
+	  const data = await response.json();
+	  if (response.ok) {
+	    localStorage.setItem('user', JSON.stringify(data.user));
+	    navigate("/pdashboard");
+	  } else {
+	    setError(data.message || 'Invalid email or password.');
+	  }
+	} else {
+	  const response = await fetch('http://localhost:5000/signup', {
+	    method: 'POST',
+	    headers: {
+	      'Content-Type': 'application/json',
+	    },
+	    body: JSON.stringify(formData),
+	  });
+	
+	  const data = await response.json();
+	  if (response.ok) {
+	    alert('Sign-Up successful!');
+	    setIsLogin(true);
+	    navigate("/pdashboard");
+	  } else {
+	    setError(data.message || 'Failed to sign up. Please try again.');
+	  }
+	}
 
-      const data = await response.json();
+        // Create new user
+        const newUser = {
+          email: formData.email,
+          password: formData.password,
+          name: formData.name
+        };
 
-      if (response.ok) {
-        if (isLogin) {
-          localStorage.setItem('user', JSON.stringify(data.user));
+        const postResponse = await fetch('http://localhost:5000/users', {
+		method: 'POST', // Using PATCH to merge new user into existing users
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            [formData.email]: newUser
+          }),
+        });
+
+        if (postResponse.ok) {
+          console.log('Sign-up successful');
+          alert('Sign-Up successful!');
+          setIsLogin(true);
+          navigate("/pdashboard");
         } else {
-          localStorage.setItem('user', JSON.stringify({ email: formData.email, name: formData.name }));
+          setError('Failed to sign up. Please try again.');
         }
-	localStorage.setItem('role', 'patient');
-        navigate('/pdashboard');
-      } else {
-        setError(data.message || 'Authentication failed.');
       }
     } catch (err) {
       console.error('Error:', err);
@@ -65,6 +103,7 @@ const PAuthPage = () => {
       [e.target.name]: e.target.value
     });
   };
+
   return (
     <div className="min-h-screen bg-gradient-to-r bg-blue-50 flex flex-col items-center justify-center px-4">
       <div className="w-full max-w-md">
